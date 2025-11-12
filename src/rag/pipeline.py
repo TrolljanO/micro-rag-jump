@@ -3,9 +3,9 @@ import time
 from typing import Dict
 from dotenv import load_dotenv
 
-from rag.retriever import VectorRetriever
-from rag.generator import ResponseGenerator
-from schemas.response import QuestionResponse, Citation, Metrics
+from .retriever import VectorRetriever
+from .generator import ResponseGenerator
+from ..schemas.response import QuestionResponse, Citation, Metrics
 
 load_dotenv()
 
