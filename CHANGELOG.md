@@ -21,67 +21,67 @@ seguindo [Semantic Versioning](https://semver.org/lang/pt-BR/).
 ### Added
 
 - **Backend:**
-    - Sistema RAG completo com FAISS e GPT-4o-mini
-    - Pipeline de ingestão: PyMuPDF → Chunking → Embeddings → FAISS
-    - Retriever com busca por similaridade (top-k=3)
-    - Generator com prompts otimizados
-    - Guardrails:
-        - Bloqueio de prompt injection (ignore, revele, atue)
-        - Bloqueio de conteúdo fora do domínio (CPF, dados pessoais)
-        - Bloqueio de conteúdo inadequado (violência, fraude)
-    - Observabilidade:
-        - Métricas de latência (total, retrieval, generation)
-        - Contagem de tokens (prompt, completion, total)
-        - Custo estimado por requisição
-        - Tamanho de contexto e top-k utilizado
-    - API FastAPI com:
-        - Endpoint POST /ask
-        - Health check GET /health
-        - Documentação Swagger em /docs
-        - CORS configurado para frontend
-    - Logging estruturado
-    - Testes unitários com pytest (cobertura completa)
+  - Sistema RAG completo com FAISS e GPT-4o-mini
+  - Pipeline de ingestão: PyMuPDF → Chunking → Embeddings → FAISS
+  - Retriever com busca por similaridade (top-k=3)
+  - Generator com prompts otimizados
+  - Guardrails:
+    - Bloqueio de prompt injection (ignore, revele, atue)
+    - Bloqueio de conteúdo fora do domínio (CPF, dados pessoais)
+    - Bloqueio de conteúdo inadequado (violência, fraude)
+  - Observabilidade:
+    - Métricas de latência (total, retrieval, generation)
+    - Contagem de tokens (prompt, completion, total)
+    - Custo estimado por requisição
+    - Tamanho de contexto e top-k utilizado
+  - API FastAPI com:
+    - Endpoint POST /ask
+    - Health check GET /health
+    - Documentação Swagger em /docs
+    - CORS configurado para frontend
+  - Logging estruturado
+  - Testes unitários com pytest (cobertura completa)
 - **Frontend:**
-    - Interface chat estilo WhatsApp/ChatGPT
-    - Histórico de conversas com scroll automático
-    - Componentes React reutilizáveis:
-        - ChatBubble para mensagens do usuário
-        - ChatMessage para respostas do assistente
-        - MetricsCard para observabilidade (versão compacta)
-        - CitationsList para fontes citadas
-        - Header, Footer, Container para layout
-    - Stack moderna:
-        - React 18 com hooks
-        - Vite 5 como bundler
-        - Tailwind CSS v4 para estilização
-        - DaisyUI v5 para componentes
-    - Tema customizado com cores Jump (#FF7A00)
-    - Loading states e feedback visual
-    - Tratamento de erros com alerts
-    - Responsivo para desktop e mobile
-    - Hook customizado useRAG para gerenciar estado
+  - Interface chat estilo WhatsApp/ChatGPT
+  - Histórico de conversas com scroll automático
+  - Componentes React reutilizáveis:
+    - ChatBubble para mensagens do usuário
+    - ChatMessage para respostas do assistente
+    - MetricsCard para observabilidade (versão compacta)
+    - CitationsList para fontes citadas
+    - Header, Footer, Container para layout
+  - Stack moderna:
+    - React 18 com hooks
+    - Vite 5 como bundler
+    - Tailwind CSS v4 para estilização
+    - DaisyUI v5 para componentes
+  - Tema customizado com cores Jump (#FF7A00)
+  - Loading states e feedback visual
+  - Tratamento de erros com alerts
+  - Responsivo para desktop e mobile
+  - Hook customizado useRAG para gerenciar estado
 - **Infraestrutura:**
-    - Deploy automatizado:
-        - Backend no Render (Python 3.11)
-        - Frontend no Vercel (Node 18)
-    - CI/CD via GitHub Actions:
-        - Lint (flake8, black, isort)
-        - Testes automatizados
-        - Build verification
-    - Environment variables documentadas (.env.example)
-    - Versionamento semântico (Semver)
+  - Deploy automatizado:
+    - Backend no Render (Python 3.11)
+    - Frontend no Vercel (Node 18)
+  - CI/CD via GitHub Actions:
+    - Lint (flake8, black, isort)
+    - Testes automatizados
+    - Build verification
+  - Environment variables documentadas (.env.example)
+  - Versionamento semântico (Semver)
 - **Documentação:**
-    - README completo com:
-        - Arquitetura do sistema
-        - Decisões técnicas justificadas
-        - Contrato da API
-        - Guia de instalação
-        - Métricas e observabilidade
-        - Roteiro de validação manual
-        - Limitações e trade-offs
-    - Release notes v1.0.0
-    - Comentários em código explicando lógica
-    - Docstrings em funções principais
+  - README completo com:
+    - Arquitetura do sistema
+    - Decisões técnicas justificadas
+    - Contrato da API
+    - Guia de instalação
+    - Métricas e observabilidade
+    - Roteiro de validação manual
+    - Limitações e trade-offs
+  - Release notes v1.0.0
+  - Comentários em código explicando lógica
+  - Docstrings em funções principais
 
 ### Fixed
 
@@ -102,9 +102,9 @@ seguindo [Semantic Versioning](https://semver.org/lang/pt-BR/).
 ### Security
 
 - Guardrails implementados contra:
-    - Prompt injection
-    - Tentativas de extrair system prompt
-    - Perguntas maliciosas fora do domínio
+  - Prompt injection
+  - Tentativas de extrair system prompt
+  - Perguntas maliciosas fora do domínio
 - Validação rigorosa de entrada no backend
 - CORS restrito a origens conhecidas
 - Environment variables protegidas
@@ -119,18 +119,21 @@ seguindo [Semantic Versioning](https://semver.org/lang/pt-BR/).
 ### Technical Details
 
 #### Guardrails
+
 - **Pattern Detection**: 16 regex patterns for prompt injection
 - **Domain Keywords**: 50+ keywords for out-of-domain detection
 - **Inappropriate Keywords**: 30+ keywords for content safety
 - **Case Insensitivity**: All checks are case-insensitive
 
 #### Testing Coverage
+
 - **Guardrails**: 100% coverage of validation rules
 - **Pipeline**: Blocked and valid request flows
 - **Components**: Retriever, Generator initialization and interfaces
 - **Integration**: End-to-end pipeline with mocked dependencies
 
 #### CI/CD
+
 - **Triggers**: Push to main/develop, PRs to main/develop
 - **Checks**: Lint, tests, coverage, build verification
 - **Python**: 3.10+
@@ -152,6 +155,7 @@ None - v1.0.0 is backward compatible with v0.1.0 API contracts.
 ## [0.1.0] - Initial Release
 
 ### Features
+
 - RAG pipeline with FAISS vector store
 - FastAPI endpoint with Pydantic validation
 - Response generation with GPT-4.1 Nano
@@ -159,6 +163,7 @@ None - v1.0.0 is backward compatible with v0.1.0 API contracts.
 - Citation support with source tracing
 
 ### Documentation
+
 - Comprehensive README with architecture and decision rationale
 - API contract specification
 - Installation and usage guide
@@ -170,12 +175,14 @@ None - v1.0.0 is backward compatible with v0.1.0 API contracts.
 ## Future Releases
 
 ### v1.1.0 - Quality Improvements
+
 - Re-ranking with cross-encoder models
 - Advanced prompt engineering with few-shot examples
 - Multi-language support
 - Feedback loop for continuous improvement
 
 ### v2.0.0 - Infrastructure Scale
+
 - Distributed vector database (Pinecone)
 - ML-based content classification
 - Advanced monitoring (Prometheus, Grafana)
