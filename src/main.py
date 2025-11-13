@@ -34,7 +34,10 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Micro-RAG API",
-    description="API de perguntas e respostas sobre gestão de estoques utilizando RAG (Retrieval-Augmented Generation).",
+    description=(
+        "API de perguntas e respostas sobre gestão de estoques "
+        "utilizando RAG (Retrieval-Augmented Generation)."
+    ),
     version="1.0.0",
     lifespan=lifespan,
 )
@@ -60,12 +63,16 @@ async def root():
     responses={
         200: {"description": "Resposta gerada com sucesso."},
         400: {"model": ErrorResponse, "description": "Requisição inválida."},
-        500: {"model": ErrorResponse, "description": "Erro interno do servidor."},
+        500: {
+            "model": ErrorResponse,
+            "description": "Erro interno do servidor.",
+        },
     },
 )
 async def ask_question(request: QuestionRequest):
     """
-    Endpoint principal: recebe uma pergunta e retorna a resposta + citaçoes + metricas.
+    Endpoint principal: recebe uma pergunta e retorna resposta
+    + citaçoes + metricas.
 
     Args:
         request: QuestionRequest com a pergunta do usuário.
@@ -82,9 +89,13 @@ async def ask_question(request: QuestionRequest):
 
         response = rag_pipeline.process_question(request.question)
 
-        print(f"Pergunta processada: '{request.question[:50]}...'")
-        print(f"    Latencia: {response.metrics.total_latency_ms} ms")
-        print(f"    Tokens usados: {response.metrics.total_tokens}")
+        if response.is_blocked:
+            print(f"Pergunta BLOQUEADA: '{request.question[:50]}...'")
+            print(f"    Motivo: {response.block_reason}")
+        else:
+            print(f"Pergunta processada: '{request.question[:50]}...'")
+            print(f"    Latencia: {response.metrics.total_latency_ms} ms")
+            print(f"    Tokens usados: {response.metrics.total_tokens}")
 
         return response
 
@@ -92,5 +103,6 @@ async def ask_question(request: QuestionRequest):
         print(f"Erro ao processar a pergunta: {str(e)}")
 
         raise HTTPException(
-            status_code=500, detail=f"Erro interno ao processar a pergunta: {str(e)}"
+            status_code=500,
+            detail=f"Erro interno ao processar a pergunta: {str(e)}",
         )
