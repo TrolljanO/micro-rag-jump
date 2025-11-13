@@ -1,9 +1,11 @@
 # Micro-RAG: Sistema de Perguntas e Respostas sobre Gestão de Estoques
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/seu-usuario/micro-rag-jump/releases/tag/v1.0.0)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/TrolljanO/micro-rag-jump/releases/tag/v1.0.0)
 [![Python](https://img.shields.io/badge/python-3.10+-green.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115.0-teal.svg)](https://fastapi.tiangolo.com/)
 [![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
+[![Vercel](https://img.shields.io/badge/deploy-vercel-brightgreen.svg)](https://micro-rag-jump.vercel.app)
+[![Render](https://img.shields.io/badge/deploy-render-success.svg)](https://micro-rag-jump-api.onrender.com)
 
 > Microserviço RAG (Retrieval-Augmented Generation) que responde perguntas sobre gestão de estoques com base em 3 documentos técnicos, retornando resposta, citações e métricas detalhadas.
 
@@ -12,6 +14,7 @@
 ## 📋 Índice
 
 - [Visão Geral](#-visão-geral)
+- [Demo ao Vivo](#-demo-ao-vivo)
 - [Arquitetura](#-arquitetura)
 - [Decisões Técnicas](#-decisões-técnicas)
 - [Contrato da API](#-contrato-da-api)
@@ -20,7 +23,7 @@
 - [Métricas e Observabilidade](#-métricas-e-observabilidade)
 - [Testes e Qualidade](#-testes-e-qualidade)
 - [CI/CD e Versionamento](#-cicd-e-versionamento)
-- [Roteiro de Validação Manual](#-roteiro-de-validação-manual)
+- [Roteiro de Validação Manual]((#roteiro-de-validação-manual)
 - [Limitações e Trade-offs](#️-limitações-e-trade-offs)
 - [Próximos Passos](#-próximos-passos-v110)
 
@@ -59,7 +62,21 @@ Sistema de perguntas e respostas que implementa RAG para responder questões sob
 
 ---
 
-## 🏗️ Arquitetura
+## � Demo ao Vivo
+
+### URLs de Produção
+
+- **Frontend (Chat):** https://micro-rag-jump.vercel.app
+- **Backend API:** https://micro-rag-jump-api.onrender.com
+- **API Docs (Swagger):** https://micro-rag-jump-api.onrender.com/docs
+
+### Interface
+
+> **Nota:** Screenshots em `docs/screenshots/` (adicionar posteriormente)
+
+---
+
+## �🏗️ Arquitetura
 
 ### Fluxo do Sistema
 

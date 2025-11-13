@@ -1,53 +1,120 @@
-# CHANGELOG
+# Changelog
 
-## [1.0.0] - 2025-11-13
+Todas as mudanças notáveis do projeto Micro-RAG Jump.
+
+Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
+seguindo [Semantic Versioning](https://semver.org/lang/pt-BR/).
+
+## [Unreleased](https://github.com/TrolljanO/micro-rag-jump/compare/v1.0.0...HEAD)
+
+### Planejado para v1.1.0
+
+- Re-ranking com Cross-Encoder para melhor precisão
+- Modo escuro/claro no frontend
+- Exportar histórico de conversas (JSON/PDF)
+- Suporte multilíngue (EN/ES)
+- Cache de embeddings para perguntas frequentes
+- Analytics de uso
+
+## [1.0.0](https://github.com/TrolljanO/micro-rag-jump/releases/tag/v1.0.0) - 2025-11-13
 
 ### Added
 
-#### Core Features
-- ✅ **Guardrails Implementation**: Complete protection against:
-  - Prompt injection attempts (ignore instructions, reveal system prompt, act as patterns)
-  - Out-of-domain requests (CPF, medicine, politics, sports, legal, etc.)
-  - Inappropriate content (violence, fraud, illegal activities)
-  - Input validation (min/max length, empty strings)
+- **Backend:**
+    - Sistema RAG completo com FAISS e GPT-4o-mini
+    - Pipeline de ingestão: PyMuPDF → Chunking → Embeddings → FAISS
+    - Retriever com busca por similaridade (top-k=3)
+    - Generator com prompts otimizados
+    - Guardrails:
+        - Bloqueio de prompt injection (ignore, revele, atue)
+        - Bloqueio de conteúdo fora do domínio (CPF, dados pessoais)
+        - Bloqueio de conteúdo inadequado (violência, fraude)
+    - Observabilidade:
+        - Métricas de latência (total, retrieval, generation)
+        - Contagem de tokens (prompt, completion, total)
+        - Custo estimado por requisição
+        - Tamanho de contexto e top-k utilizado
+    - API FastAPI com:
+        - Endpoint POST /ask
+        - Health check GET /health
+        - Documentação Swagger em /docs
+        - CORS configurado para frontend
+    - Logging estruturado
+    - Testes unitários com pytest (cobertura completa)
+- **Frontend:**
+    - Interface chat estilo WhatsApp/ChatGPT
+    - Histórico de conversas com scroll automático
+    - Componentes React reutilizáveis:
+        - ChatBubble para mensagens do usuário
+        - ChatMessage para respostas do assistente
+        - MetricsCard para observabilidade (versão compacta)
+        - CitationsList para fontes citadas
+        - Header, Footer, Container para layout
+    - Stack moderna:
+        - React 18 com hooks
+        - Vite 5 como bundler
+        - Tailwind CSS v4 para estilização
+        - DaisyUI v5 para componentes
+    - Tema customizado com cores Jump (#FF7A00)
+    - Loading states e feedback visual
+    - Tratamento de erros com alerts
+    - Responsivo para desktop e mobile
+    - Hook customizado useRAG para gerenciar estado
+- **Infraestrutura:**
+    - Deploy automatizado:
+        - Backend no Render (Python 3.11)
+        - Frontend no Vercel (Node 18)
+    - CI/CD via GitHub Actions:
+        - Lint (flake8, black, isort)
+        - Testes automatizados
+        - Build verification
+    - Environment variables documentadas (.env.example)
+    - Versionamento semântico (Semver)
+- **Documentação:**
+    - README completo com:
+        - Arquitetura do sistema
+        - Decisões técnicas justificadas
+        - Contrato da API
+        - Guia de instalação
+        - Métricas e observabilidade
+        - Roteiro de validação manual
+        - Limitações e trade-offs
+    - Release notes v1.0.0
+    - Comentários em código explicando lógica
+    - Docstrings em funções principais
 
-- ✅ **Comprehensive Testing Suite**:
-  - `test_guardrails.py`: 20+ tests for input validation
-  - `test_pipeline.py`: 10+ tests for RAG pipeline with guardrails
-  - `test_retriever_generator.py`: 10+ tests for individual components
-  - All tests use mocking to avoid external dependencies
+### Fixed
 
-- ✅ **CI/CD Pipeline**:
-  - GitHub Actions workflow (`.github/workflows/tests.yml`)
-  - Automated lint checks (flake8, black, isort)
-  - Automated test execution on push and PR
-  - Build verification
-
-#### Documentation
-- ✅ **Expanded README** with new sections:
-  - Tests and Quality section explaining test coverage
-  - CI/CD and Versioning section describing workflow
-  - Manual Validation Roadmap with 4 test cases and expected results
-  - Updated feature list to v1.0.0
-
-#### API Enhancements
-- ✅ **Response Schema Update**:
-  - Added `is_blocked` field to indicate guardrail blocks
-  - Added `block_reason` field with blocking reason
-  - Added `block_message` field with user-friendly message
-  - Backward compatible with existing response structure
-
-- ✅ **Pipeline Integration**:
-  - Guardrails applied before retrieval/generation
-  - Blocked requests return with zero latency
-  - Full metrics present even for blocked requests
+- Validação de campos undefined nas métricas do frontend
+- Aplicação correta das cores customizadas do DaisyUI
+- Import correto de assets SVG (logo Jump)
+- Scroll automático para última mensagem do chat
+- Formatadores com proteção contra valores nulos
+- CORS origins atualizados para URL de produção
 
 ### Changed
 
-- Updated `src/rag/pipeline.py` to integrate guardrails validation
-- Modified `src/main.py` endpoint to log blocked requests
-- Enhanced error handling for blocked requests
-- Updated version badge in README from v0.1.0 to v1.0.0
+- Arquitetura de resposta única para histórico de chat (melhor UX)
+- Hook useRAG retorna dados ao invés de armazenar estado (arquitetura mais limpa)
+- Estrutura de componentes mais modular e reutilizável
+- MetricsCard compacto para caber no chat bubble
+
+### Security
+
+- Guardrails implementados contra:
+    - Prompt injection
+    - Tentativas de extrair system prompt
+    - Perguntas maliciosas fora do domínio
+- Validação rigorosa de entrada no backend
+- CORS restrito a origens conhecidas
+- Environment variables protegidas
+
+### Performance
+
+- Latência média total: ~5s
+- Latência de retrieval: ~1.5s
+- Latência de geração: ~3.5s
+- Custo médio por pergunta: ~$0.0001 USD
 
 ### Technical Details
 
