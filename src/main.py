@@ -1,17 +1,18 @@
 import os
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 
 from src.schemas.request import QuestionRequest
 from src.schemas.response import QuestionResponse, ErrorResponse
 from src.rag.pipeline import RAGPipeline
+import logging
 
 load_dotenv()
 
 rag_pipeline = None
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -42,6 +43,21 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 async def root():
@@ -82,6 +98,8 @@ async def ask_question(request: QuestionRequest):
     """
 
     try:
+        logger.info(f"Recebida pergunta: {request.question}")
+
         if rag_pipeline is None:
             raise HTTPException(
                 status_code=503, detail="Pipeline não foi inicializado."
@@ -100,8 +118,7 @@ async def ask_question(request: QuestionRequest):
         return response
 
     except Exception as e:
-        print(f"Erro ao processar a pergunta: {str(e)}")
-
+        logger.error(f"Erro ao processar pergunta: {str(e)}")
         raise HTTPException(
             status_code=500,
             detail=f"Erro interno ao processar a pergunta: {str(e)}",
