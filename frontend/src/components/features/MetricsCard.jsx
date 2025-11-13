@@ -10,14 +10,17 @@ import {
  * Props:
  * - metrics: Objeto com métricas { latency_total, tokens_total, cost_total, etc }
  *
- * Exemplo de metrics:
+ * Estrutura esperada das metrics:
  * {
- *   latency_total: 1234,      // ms
- *   latency_retrieval: 450,   // ms
- *   tokens_prompt: 150,
- *   tokens_response: 300,
- *   tokens_total: 450,
- *   cost_total: 0.00123
+ *   total_latency_ms: 5325.39,
+ *   retrieval_latency_ms: 1671.64,
+ *   generation_latency_ms: 3653.59,
+ *   prompt_tokens: 615,
+ *   completion_tokens: 165,
+ *   total_tokens: 780,
+ *   estimated_cost_usd: 0.000094,
+ *   top_k: 3,
+ *   context_size: 2265
  * }
  */
 export default function MetricsCard({ metrics }) {
@@ -52,7 +55,7 @@ export default function MetricsCard({ metrics }) {
           </div>
           <div className="stat-title">Latência Total</div>
           <div className="stat-value text-primary">
-            {formatLatency(metrics.latency_total)}
+            {formatLatency(metrics.total_latency_ms)}
           </div>
           <div className="stat-desc">Tempo de resposta completo</div>
         </div>
@@ -76,7 +79,7 @@ export default function MetricsCard({ metrics }) {
           </div>
           <div className="stat-title">Retrieval</div>
           <div className="stat-value text-secondary">
-            {formatLatency(metrics.latency_retrieval)}
+            {formatLatency(metrics.retrieval_latency_ms)}
           </div>
           <div className="stat-desc">Busca no índice vetorial</div>
         </div>
@@ -100,11 +103,11 @@ export default function MetricsCard({ metrics }) {
           </div>
           <div className="stat-title">Tokens</div>
           <div className="stat-value text-accent">
-            {formatTokens(metrics.tokens_total)}
+            {metrics.total_tokens || "N/A"}
           </div>
           <div className="stat-desc">
-            {formatTokens(metrics.tokens_prompt)} prompt +{" "}
-            {formatTokens(metrics.tokens_response)} resposta
+            {formatTokens(metrics.prompt_tokens)} prompt +{" "}
+            {formatTokens(metrics.completion_tokens)} resposta
           </div>
         </div>
 
@@ -127,34 +130,38 @@ export default function MetricsCard({ metrics }) {
           </div>
           <div className="stat-title">Custo Estimado</div>
           <div className="stat-value text-warning text-2xl">
-            {formatCost(metrics.cost_total)}
+            {formatCost(metrics.estimated_cost_usd)}
           </div>
           <div className="stat-desc">Modelo OpenAI</div>
         </div>
       </div>
 
-      {/* Informações extras (se houver) */}
-      {metrics.top_k && (
-        <div className="alert alert-info shadow-sm mt-4">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            className="stroke-current shrink-0 w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <span className="text-sm">
-            Top-K: {metrics.top_k} chunks recuperados | Contexto:{" "}
-            {metrics.context_size || "N/A"} caracteres
-          </span>
+      {/* Informações extras Top-K e Contexto */}
+      <div className="alert alert-info shadow-sm mt-4">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          className="stroke-current shrink-0 w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        <div className="flex flex-col gap-1">
+          <span className="text-sm font-bold">Detalhes da Busca</span>
+          <div className="text-xs opacity-80">
+            <span className="font-semibold">Top-K:</span> {metrics.top_k} chunks
+            recuperados |<span className="font-semibold ml-2">Contexto:</span>{" "}
+            {metrics.context_size} caracteres |
+            <span className="font-semibold ml-2">Geração:</span>{" "}
+            {formatLatency(metrics.generation_latency_ms)}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
