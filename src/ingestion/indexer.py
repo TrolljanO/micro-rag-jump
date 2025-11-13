@@ -8,17 +8,8 @@ from langchain_core.documents import Document
 def create_vector_index(
     chunks: List[Dict[str, str]], index_path: str = "vector_index"
 ) -> FAISS:
-    """
-    Cria o indice vetorial com embeddings dos chunks.
-
-    Args:
-        chunks: Lista de chunks processados
-        index_path: Caminho para salvar o indice
-
-    Returns:
-        Indice FAISS criado
-    """
-    print(f"\n Gerando embeddings para {len(chunks)} chunks...")
+    """Create FAISS vector index from chunks."""
+    print("\n Gerando embeddings para", len(chunks), "chunks...")
 
     from dotenv import load_dotenv
 
@@ -44,15 +35,15 @@ def create_vector_index(
         )
         documents.append(doc)
 
-    print(f"    Criando indice vetorial FAISS...")
+    print("    Criando indice vetorial FAISS...")
 
     vector_store = FAISS.from_documents(documents, embeddings)
 
     vector_store.save_local(index_path)
 
-    print(f"    Indice salvo em: {index_path}\n")
-    print(f"    - {len(chunks)} chunks indexados.\n")
-    print(f"    - Modelo de embeddings: {embeddings_model}")
+    print("    Indice salvo em:", index_path, "\n")
+    print("    -", len(chunks), "chunks indexados.\n")
+    print("    - Modelo de embeddings:", embeddings_model)
 
     return vector_store
 
@@ -72,10 +63,10 @@ if __name__ == "__main__":
     vector_index = create_vector_index(chunks, index_path="vector_index")
 
     if chunks:
-        print(f"\n Primeiro de chunk:")
-        print(f"Fonte: {chunks[0]['source']}")
+        print("\n Primeiro de chunk:")
+        print("Fonte:", chunks[0]["source"])
         print(
-            f"Chunk {int(chunks[0]['chunk_id']) + 1}/{int(chunks[0]['total_chunks'])}"
+            "Chunk", int(chunks[0]["chunk_id"]) + 1, "/", int(chunks[0]["total_chunks"])
         )
-        print(f"\nConteúdo:")
+        print("\nConteúdo:")
         print(chunks[0]["content"][:300] + "...")

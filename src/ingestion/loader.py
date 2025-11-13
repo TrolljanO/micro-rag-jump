@@ -3,19 +3,8 @@ from pathlib import Path
 import fitz
 from typing import List, Dict
 
-from posthog import page
-
-
 def load_pdfs_from_directory(directory_path: str = "data") -> List[Dict[str, str]]:
-    """
-    Carrega todos os PDFs de uma pasta e extrai o texto
-
-    Args:
-        folder_path: Path com os PDfs
-
-    Returns:
-        Lista de dicionários com metadata e conteudo
-    """
+    """Load PDFs from a directory and extract text."""
     documents = []
     data_path = Path(directory_path)
 
@@ -24,7 +13,7 @@ def load_pdfs_from_directory(directory_path: str = "data") -> List[Dict[str, str
     if not pdf_files:
         raise ValueError(f"Nenhum PDF encontrado na pasta: {directory_path}")
 
-    print(f"Carregando {len(pdf_files)} arquivos PDF da pasta: {directory_path}")
+    print("Carregando", len(pdf_files), "arquivos PDF da pasta:", directory_path)
 
     for pdf_file in pdf_files:
         print(f"Processando arquivo: {pdf_file.name}")
@@ -51,7 +40,7 @@ def load_pdfs_from_directory(directory_path: str = "data") -> List[Dict[str, str
                 }
             )
 
-            print(f"{pdf_file.name}: {num_pages} paginas extraídas.")
+        print(f"{pdf_file.name}: {num_pages} paginas extraídas.")
 
         except Exception as e:
             print(f"Erro ao processar {pdf_file.name}: {str(e)}")
@@ -66,10 +55,10 @@ def load_pdfs_from_directory(directory_path: str = "data") -> List[Dict[str, str
 if __name__ == "__main__":
     docs = load_pdfs_from_directory("data")
     if docs:
-        print(f"\nExemplo de conteúdo do primeiro documento:")
-        print(f"Fonte: {docs[0]['source']}")
-        print(f"Paginas: {docs[0]['num_pages']}")
-        print(f"\nConteúdo:\n")
+        print("\nExemplo de conteúdo do primeiro documento:")
+        print("Fonte:", docs[0]["source"])
+        print("Paginas:", docs[0]["num_pages"])
+        print("\nConteúdo:\n")
         print(docs[0]["content"][:500])
     else:
         print("Nenhum documento foi carregado.")
