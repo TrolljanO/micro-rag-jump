@@ -23,7 +23,7 @@
 - [Métricas e Observabilidade](#-métricas-e-observabilidade)
 - [Testes e Qualidade](#-testes-e-qualidade)
 - [CI/CD e Versionamento](#-cicd-e-versionamento)
-- [Roteiro de Validação Manual]((#roteiro-de-validação-manual)
+- [Roteiro de Validação Manual](#roteiro-de-validação-manual)
 - [Limitações e Trade-offs](#️-limitações-e-trade-offs)
 - [Próximos Passos](#-próximos-passos-v110)
 
