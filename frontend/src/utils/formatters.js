@@ -26,6 +26,10 @@ export function formatLatency(ms) {
  * formatTokens(450)  → "450"
  */
 export function formatTokens(tokens) {
+  if (tokens === undefined || tokens === null || isNaN(tokens)) {
+    return "N/A";
+  }
+
   if (tokens >= 1000) {
     return `${(tokens / 1000).toFixed(1)}k`;
   }
