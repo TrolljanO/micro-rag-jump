@@ -44,6 +44,11 @@ class QuestionResponse(BaseModel):
     answer: str = Field(..., description="Resposta gerada para a pergunta do usuário")
     citations: List[Citation] = Field(..., description="Lista de fontes utilizadas")
     metrics: Metrics = Field(..., description="Métricas da execução")
+    is_blocked: bool = Field(False, description="Indica se requisição foi bloqueada")
+    block_reason: Optional[str] = Field(None, description="Motivo do bloqueio")
+    block_message: Optional[str] = Field(
+        None, description="Mensagem de recusa ao usuário"
+    )
 
     class Config:
         json_schema_extra = {
