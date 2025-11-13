@@ -18,8 +18,6 @@ import { askQuestion } from "../services/api";
  * - resetResponse: função para limpar resposta
  */
 export function useRAG() {
-  const [response, setResponse] = useState(null);
-
   const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState(null);
@@ -40,10 +38,11 @@ export function useRAG() {
     try {
       const data = await askQuestion(question);
 
-      setResponse(data);
+      console.log("Resposta do backend: ", data);
+      return data;
     } catch (err) {
       setError(err.message || "Erro ao processar pergunta");
-      setResponse(null);
+      return null;
     } finally {
       setLoading(false);
     }
@@ -53,12 +52,10 @@ export function useRAG() {
    * Limpa resposta e erros
    */
   function resetResponse() {
-    setResponse(null);
     setError(null);
   }
 
   return {
-    response,
     loading,
     error,
     submitQuestion,
