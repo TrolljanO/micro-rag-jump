@@ -32,7 +32,7 @@ class TestRAGPipelineIntegration:
 
         assert isinstance(response, QuestionResponse)
         assert response.is_blocked is True
-        assert response.block_reason == "PROMPT_INJECTION"
+        assert response.block_reason == "prompt_injection_detected"
         assert response.block_message is not None
         assert response.answer == ""
         assert len(response.citations) == 0
@@ -42,7 +42,7 @@ class TestRAGPipelineIntegration:
         response = mock_pipeline.process_question("qual é meu CPF?")
 
         assert response.is_blocked is True
-        assert response.block_reason == "OUT_OF_DOMAIN"
+        assert response.block_reason == "out_of_domain_request"
 
     def test_blocked_response_has_metrics(self, mock_pipeline):
         """Teste: resposta bloqueada contém métricas zeradas."""
