@@ -1,11 +1,12 @@
 import os
 import time
-from typing import Dict
+from typing import Dict, Tuple, Optional
 from dotenv import load_dotenv
 
 from .retriever import VectorRetriever
 from .generator import ResponseGenerator
 from ..schemas.response import QuestionResponse, Citation, Metrics
+from ..guardrails import validate_question
 
 load_dotenv()
 
@@ -47,6 +48,28 @@ class RAGPipeline:
 
         total_start = time.time()
 
+        validation_result = validate_question(question)
+        if not validation_result.is_valid:
+            metrics = Metrics(
+                total_latency_ms=round((time.time() - total_start) * 1000, 2),
+                retrieval_latency_ms=0.0,
+                generation_latency_ms=0.0,
+                prompt_tokens=0,
+                completion_tokens=0,
+                total_tokens=0,
+                estimated_cost_usd=0.0,
+                top_k=0,
+                context_size=0,
+            )
+            return QuestionResponse(
+                answer="",
+                citations=[],
+                metrics=metrics,
+                is_blocked=True,
+                block_reason=validation_result.block_reason,
+                block_message=validation_result.block_message,
+            )
+
         retrieved_chunks, retrieval_latency = self.retriever.retrieve(
             question, top_k=self.top_k
         )
@@ -85,7 +108,14 @@ class RAGPipeline:
             context_size=context_size,
         )
 
-        response = QuestionResponse(answer=answer, citations=citations, metrics=metrics)
+        response = QuestionResponse(
+            answer=answer,
+            citations=citations,
+            metrics=metrics,
+            is_blocked=False,
+            block_reason=None,
+            block_message=None,
+        )
 
         return response
 
@@ -116,9 +146,10 @@ if __name__ == "__main__":
     print(f"Latência Total: {response.metrics.total_latency_ms}ms")
     print(f"    - Retrieval: {response.metrics.retrieval_latency_ms}ms")
     print(f"    - Generation: {response.metrics.generation_latency_ms}ms")
-    print(
-        f"Tokens: {response.metrics.total_tokens} (prompt: {response.metrics.prompt_tokens}, completion: {response.metrics.completion_tokens})"
-    )
+    prompt_tks = response.metrics.prompt_tokens
+    comp_tks = response.metrics.completion_tokens
+    total_tks = response.metrics.total_tokens
+    print(f"Tokens: {total_tks} (prompt: {prompt_tks}, completion: {comp_tks})")
     print(f"Custo Estimado: ${response.metrics.estimated_cost_usd}")
     print(f"Top-K: {response.metrics.top_k}")
     print(f"Tamanho do Contexto: {response.metrics.context_size} caracteres")
