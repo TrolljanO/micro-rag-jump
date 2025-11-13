@@ -1,16 +1,50 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-@theme {
-  --color-primary: #ff7a00;
-  --color-secondary: #60a5fa;
-  --color-accent: #34d399;
-  --color-neutral: #1e293b;
-  --color-base-100: #0f172a;
-  --color-base-200: #1e293b;
-  --color-base-300: #334155;
-  --color-info: #3abff8;
+:root {
+  /* Cores Principais */
+  --color-primary: #f07e14; /* Laranja Jump */
+  --color-primary-focus: #d56706; /* Laranja escuro (hover) */
+  --color-primary-content: #eeeeee; /* Texto sobre primary */
+
+  --color-secondary: #487ec0; /* Azul suave */
+  --color-secondary-focus: #306bca;
+  --color-secondary-content: #eeeeee;
+
+  --color-accent: #34d399; /* Verde */
+  --color-accent-focus: #10b981;
+  --color-accent-content: #eeeeee;
+
+  /* Cores Neutras (Fundos) */
+  --color-neutral: #1e293b; /* Cinza médio */
+  --color-neutral-focus: #334155;
+  --color-neutral-content: #e2e8f0;
+
+  --color-base-100: #0f172a; /* Fundo principal escuro */
+  --color-base-200: #1e293b; /* Cards */
+  --color-base-300: #334155; /* Hover states */
+  --color-base-content: #e2e8f0; /* Texto sobre fundos */
+
+  /* Cores de Feedback */
+  --color-info: #2fa1d2;
+  --color-info-content: #eeeeee;
+
   --color-success: #36d399;
-  --color-warning: #fbbd23;
+  --color-success-content: #eeeeee;
+
+  --color-warning: #eeb420;
+  --color-warning-content: #0f0f0f;
+
   --color-error: #f87272;
+  --color-error-content: #eeeeee;
+
+  /* Raio de bordas */
+  --rounded-box: 16rem;
+  --rounded-btn: 12rem;
+  --rounded-badge: 1.9rem;
+}
+
+[data-theme] {
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
 }
